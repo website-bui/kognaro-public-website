@@ -256,6 +256,11 @@ html, body {
   margin: 13pt 0 7pt;
 }
 
+/* INTENT: headings carry an invisible link back to the Contents page
+   (see build-print.mjs) — inherit everything so nothing looks like a
+   hyperlink on paper. */
+.body-copy .toclink { color: inherit; text-decoration: none; }
+
 /* INTENT: widows/orphans ≥ 3 lines — no stranded single lines at page
    edges anywhere in 14k words. */
 p { margin: 0 0 9pt; orphans: 3; widows: 3; }

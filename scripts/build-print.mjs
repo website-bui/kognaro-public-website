@@ -82,7 +82,9 @@ for (const raw of body) {
     const text = h[2].trim();
     const id = slugify(text);
     if (level <= 2) toc.push({ level, text: text.replace(/\*|_/g, ""), id });
-    out.push(`<h${level} id="${id}">${inline(text)}</h${level}>`);
+    // INTENT: headings link BACK to the Contents page (invisible styling) so
+    // navigation works both ways in the PDF: TOC → section, heading → TOC.
+    out.push(`<h${level} id="${id}"><a class="toclink" href="#toc">${inline(text)}</a></h${level}>`);
     continue;
   }
   const bullet = line.match(/^\s*[-*+]\s+(.*)$/);
@@ -163,7 +165,7 @@ const html = `<!DOCTYPE html>
     <a class="site" href="https://kognaro.com">kognaro.com</a>
   </section>
 
-  <section class="toc-page">
+  <section class="toc-page" id="toc">
     <div class="toc-title">Contents</div>
     <ol>
     ${tocParts.join("\n    ")}
