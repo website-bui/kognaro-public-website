@@ -19,6 +19,16 @@ To regenerate the whitepaper HTML after editing the markdown:
 node scripts/normalize.mjs && node scripts/build-whitepaper.mjs
 ```
 
+To regenerate the PDF (two passes — the first measures heading pages for the TOC; requires headless Edge and `pip install pypdf`):
+
+```
+rm -f whitepaper/toc-pages.json
+node scripts/build-print.mjs && node scripts/render-pdf.mjs whitepaper/print.html whitepaper/kognaro-trust-is-structural.pdf
+python scripts/extract-toc-pages.py
+node scripts/build-print.mjs && node scripts/render-pdf.mjs whitepaper/print.html whitepaper/kognaro-trust-is-structural.pdf
+python scripts/add-outline.py
+```
+
 ## Deploy — Cloudflare Pages
 
 1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**.

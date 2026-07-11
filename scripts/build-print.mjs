@@ -37,6 +37,22 @@ const inline = (s) => {
   return t;
 };
 
+// INTENT: heading id slugs (same scheme as build-whitepaper.mjs) so TOC
+// anchors survive into the PDF as clickable internal links — Chromium's
+// print engine converts same-document <a href="#id"> into PDF GoTo links.
+const slugCounts = new Map();
+const slugify = (s) => {
+  let slug = s
+    .toLowerCase()
+    .replace(/\*|_/g, "")
+    .replace(/[’']/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  const n = slugCounts.get(slug) ?? 0;
+  slugCounts.set(slug, n + 1);
+  return n === 0 ? slug : `${slug}-${n}`;
+};
+
 const toc = [];
 const out = [];
 let para = [];
@@ -64,8 +80,9 @@ for (const raw of body) {
     flushPara(); flushList();
     const level = h[1].length;
     const text = h[2].trim();
-    if (level <= 2) toc.push({ level, text: text.replace(/\*|_/g, "") });
-    out.push(`<h${level}>${inline(text)}</h${level}>`);
+    const id = slugify(text);
+    if (level <= 2) toc.push({ level, text: text.replace(/\*|_/g, ""), id });
+    out.push(`<h${level} id="${id}">${inline(text)}</h${level}>`);
     continue;
   }
   const bullet = line.match(/^\s*[-*+]\s+(.*)$/);
@@ -102,8 +119,8 @@ try {
 }
 const entryRow = (text, i) =>
   pages
-    ? `<span class="row">${escapeHtml(text)}<span class="leader"></span><span class="pg">${pages[i]}</span></span>`
-    : `<span class="row">${escapeHtml(text)}</span>`;
+    ? `<a class="row" href="#${toc[i].id}">${escapeHtml(text)}<span class="leader"></span><span class="pg">${pages[i]}</span></a>`
+    : `<a class="row" href="#${toc[i].id}">${escapeHtml(text)}</a>`;
 const tocParts = [];
 let openSub = false;
 for (let i = 0; i < toc.length; i++) {
@@ -143,7 +160,7 @@ const html = `<!DOCTYPE html>
     <p class="subtitle">Semantic AI as the Fabric of the Business</p>
     <p class="subsubtitle">An Architectural Framework for Governed Enterprise AI</p>
     <div class="meta">A Framework White Paper · July 2026</div>
-    <div class="site">kognaro.com</div>
+    <a class="site" href="https://kognaro.com">kognaro.com</a>
   </section>
 
   <section class="toc-page">

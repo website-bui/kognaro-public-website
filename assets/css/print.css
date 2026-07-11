@@ -155,6 +155,7 @@ html, body {
   font-size: 9pt;
   letter-spacing: 0.14em;
   color: var(--clay-on-dark);
+  text-decoration: none;   /* carried into the PDF as a live external link */
 }
 
 /* ============================================================
@@ -166,8 +167,16 @@ html, body {
    as right-aligned spans over a dotted leader. */
 .toc-page { page-break-after: always; }
 /* INTENT: each entry's text/leader/number is a flex .row of its own so
-   a nested sub-<ol> below it stays in normal flow. */
-.toc-page .row { display: flex; align-items: baseline; gap: 6pt; }
+   a nested sub-<ol> below it stays in normal flow. Rows are anchors to
+   the heading ids — Chromium carries them into the PDF as clickable
+   internal links — styled to be visually indistinguishable from text. */
+.toc-page .row {
+  display: flex;
+  align-items: baseline;
+  gap: 6pt;
+  color: inherit;
+  text-decoration: none;
+}
 .toc-page .leader {
   flex: 1;
   border-bottom: 0.75pt dotted var(--border-hairline);
