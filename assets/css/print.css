@@ -1,0 +1,276 @@
+/* ============================================================
+   KOGNARO — whitepaper PRINT stylesheet
+   Used only by whitepaper/print.html (generated, git-ignored) to
+   render whitepaper/kognaro-trust-is-structural.pdf via headless
+   Edge --print-to-pdf. Same Travertine tokens as site.css.
+   ============================================================ */
+
+/* INTENT: self-hosted brand fonts — Chromium subsets and embeds the
+   used faces into the PDF, so no viewer font substitution occurs. */
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal; font-weight: 300;
+  src: url("../fonts/SpaceGrotesk-300.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal; font-weight: 400;
+  src: url("../fonts/SpaceGrotesk-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal; font-weight: 500;
+  src: url("../fonts/SpaceGrotesk-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal; font-weight: 700;
+  src: url("../fonts/SpaceGrotesk-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal; font-weight: 500;
+  src: url("../fonts/IBMPlexMono-500.woff2") format("woff2");
+}
+
+/* INTENT: brand tokens (Travertine) — identical values to site.css. */
+:root {
+  --t-canvas:  #FBF8F3;
+  --t-ink:     #2E251A;
+  --e-base:    #1A1410;
+  --e-text:    #F4EDE2;
+  --e-dim:     #C4B299;
+  --clay:      #C2693E;
+  --clay-hover:#A8552E;
+  --clay-text: #87421F;
+  --clay-on-dark: #D9825A;
+  --ochre:     #D9A441;
+  --bronze:    #8A7355;
+  --text-secondary: #463626;
+  --text-tertiary:  #6A5742;
+  --text-muted:     #877055;
+  --border-hairline: #E6DAC5;
+  --font-sans: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+
+/* INTENT: page geometry. US Letter; margins are deliberately NOT set
+   here — they come from the Page.printToPDF call in
+   scripts/render-pdf.mjs (2cm sides/top, 2.8cm bottom), because the
+   engine draws its native footerTemplate inside the margin band it
+   owns. (Both in-CSS approaches to per-page footers failed in
+   Chromium's print engine: @page margin-boxes are unsupported, and
+   repeated position:fixed boxes land mid-content because they are laid
+   out against the viewport, not the page.) */
+@page {
+  size: letter;
+}
+
+/* INTENT: force background colors into the PDF (Chromium drops
+   backgrounds in print output unless print-color-adjust is exact). */
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--t-canvas);
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  font-size: 10.5pt;
+  line-height: 1.6;
+  /* INTENT: Space Grotesk has no italic faces; without explicit
+     font-synthesis Chromium's print engine substitutes Segoe UI
+     Bold-Italic for the paper's ***bold-italic*** phrases (verified in
+     the embedded-font list). This forces synthesized oblique from the
+     embedded Space Grotesk weights instead. */
+  font-synthesis: weight style;
+}
+
+/* (Per-page footer is the engine's native footerTemplate — see
+   scripts/render-pdf.mjs — not an element in this document.) */
+
+/* ============================================================
+   COVER — full-bleed espresso brand page
+   ============================================================ */
+/* INTENT: the cover is an espresso panel filling the first page's
+   printable area exactly (Letter 279.4mm minus 20mm top + 28mm bottom
+   margins = 231.4mm; 231mm leaves a hair of slack so it can never spill
+   onto a second page). Clay mark, ochre accents — mirrors the landing
+   hero. */
+.cover {
+  width: 100%;
+  height: 231mm;
+  box-sizing: border-box;
+  background: var(--e-base);
+  color: var(--e-text);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 0.9in;
+  page-break-after: always;
+}
+.cover .kg-mark { width: 42px; height: 42px; color: var(--clay-on-dark); margin-bottom: 22pt; }
+.cover .kg-wordmark {
+  font-weight: 500;
+  font-size: 15pt;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 48pt;
+}
+.cover .rule { width: 52pt; border: 0; border-top: 2.5pt solid var(--clay-on-dark); margin: 0 0 30pt; }
+.cover h1 {
+  font-weight: 700;
+  font-size: 42pt;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: var(--e-text);
+  margin: 0 0 16pt;
+}
+.cover .subtitle {
+  font-weight: 300;
+  font-size: 17pt;
+  color: var(--e-dim);
+  margin: 0 0 8pt;
+}
+.cover .subsubtitle {
+  font-weight: 400;
+  font-style: italic;
+  font-size: 11pt;
+  color: var(--bronze);
+  margin: 0 0 60pt;
+}
+.cover .meta {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 9pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--e-dim);
+}
+.cover .site {
+  margin-top: 6pt;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 9pt;
+  letter-spacing: 0.14em;
+  color: var(--clay-on-dark);
+}
+
+/* ============================================================
+   TABLE OF CONTENTS page
+   ============================================================ */
+/* INTENT: TOC on its own page. Chromium can't generate page numbers
+   in CSS (no target-counter()), so build-print.mjs injects them from
+   whitepaper/toc-pages.json — measured off a first rendering pass —
+   as right-aligned spans over a dotted leader. */
+.toc-page { page-break-after: always; }
+/* INTENT: each entry's text/leader/number is a flex .row of its own so
+   a nested sub-<ol> below it stays in normal flow. */
+.toc-page .row { display: flex; align-items: baseline; gap: 6pt; }
+.toc-page .leader {
+  flex: 1;
+  border-bottom: 0.75pt dotted var(--border-hairline);
+  transform: translateY(-2pt);
+}
+.toc-page .pg {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+.toc-page .toc-title {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 9pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--clay-text);
+  margin: 0 0 18pt;
+}
+/* INTENT: sized so all 38 entries (12 H1 + 26 H2) fit ONE page inside
+   the 231mm printable height — the first cut spilled onto a second
+   page. */
+.toc-page ol { list-style: none; margin: 0; padding: 0; }
+.toc-page > ol > li {
+  font-weight: 500;
+  font-size: 11pt;
+  line-height: 1.3;
+  color: var(--t-ink);
+  margin-bottom: 5pt;
+}
+.toc-page ol ol { margin: 3pt 0 6pt 12pt; }
+.toc-page ol ol li {
+  font-weight: 400;
+  font-size: 9pt;
+  line-height: 1.3;
+  color: var(--text-tertiary);
+  margin-bottom: 2pt;
+}
+
+/* ============================================================
+   BODY typography + page-break discipline
+   ============================================================ */
+/* INTENT: same 70ch reading measure as the web layout, centered in
+   the printable area. */
+.body-copy { max-width: 70ch; margin: 0 auto; }
+
+/* INTENT: every H1 opens a fresh page; headings never sit orphaned at
+   a page bottom (break-after: avoid keeps following text attached). */
+.body-copy h1 {
+  page-break-before: always;
+  break-after: avoid;
+  font-weight: 500;
+  font-size: 19pt;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--clay-text);
+  margin: 0 0 14pt;
+  padding-bottom: 8pt;
+  border-bottom: 0.75pt solid var(--border-hairline);
+}
+.body-copy h2 {
+  break-after: avoid;
+  page-break-after: avoid;
+  font-weight: 500;
+  font-size: 13.5pt;
+  line-height: 1.3;
+  color: var(--t-ink);
+  margin: 16pt 0 8pt;
+}
+.body-copy h3 {
+  break-after: avoid;
+  page-break-after: avoid;
+  font-weight: 500;
+  font-size: 11.5pt;
+  color: var(--text-secondary);
+  margin: 13pt 0 7pt;
+}
+
+/* INTENT: widows/orphans ≥ 3 lines — no stranded single lines at page
+   edges anywhere in 14k words. */
+p { margin: 0 0 9pt; orphans: 3; widows: 3; }
+strong { font-weight: 700; color: var(--t-ink); }
+/* INTENT: Space Grotesk has no bold-italic face and Chromium's print
+   engine substitutes Segoe UI Bold-Italic rather than synthesizing
+   (font-synthesis is ignored in print). The paper's five ***bold
+   italic*** phrases are all short lead-ins, so: request the upright
+   700 face (keeps Space Grotesk embedded) and slant it ourselves with
+   a skew — a hand-made oblique. */
+.body-copy strong em, .body-copy em strong {
+  font-style: normal;
+  display: inline-block;
+  transform: skewX(-8deg);
+}
+u { text-decoration-color: var(--clay); text-underline-offset: 2pt; }
+ul, ol { margin: 0 0 9pt; padding-left: 16pt; }
+li { margin-bottom: 4pt; orphans: 3; widows: 3; }
+li::marker { color: var(--clay); }
+blockquote {
+  margin: 10pt 0;
+  padding: 1pt 0 1pt 10pt;
+  border-left: 2.25pt solid var(--clay);
+  color: var(--text-tertiary);
+  font-style: italic;
+  page-break-inside: avoid;
+}

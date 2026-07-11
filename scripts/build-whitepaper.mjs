@@ -33,6 +33,8 @@ const inline = (s) => {
   t = t.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   t = t.replace(/\*([^*]+)\*/g, "<em>$1</em>");
   t = t.replace(/ -- /g, " – ");
+  // INTENT: numeric ranges the normalizer leaves alone ("§7--8") — en dash.
+  t = t.replace(/(\d)--(\d)/g, "$1–$2");
   return t;
 };
 
