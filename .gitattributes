@@ -1,0 +1,5 @@
+# Keep all text LF in the repo and working tree (v5-normalized.md's LF/UTF-8
+# guarantee must survive checkout on Windows).
+* text=auto eol=lf
+*.woff2 binary
+*.png binary
