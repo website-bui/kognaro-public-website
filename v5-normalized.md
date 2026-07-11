@@ -446,6 +446,6 @@ Kognaro is what I am building to do the operational work it implies: the platfor
 
 I do not expect to be the only one building in this direction, and I would rather the thinking be public and timestamped than held within the confines of my mind. The paper is the thinking. The company is the work.
 
-I am building it as a solo founder, around a full-time job and a family, and I would rather say that plainly than dress it up. If you have read this far, the framework has done its job whether or not you ever touch the platform — but if you want to talk, I would welcome it. You can find me at kognaro.ai.
+I am building it as a solo founder, around a full-time job and a family, and I would rather say that plainly than dress it up. If you have read this far, the framework has done its job whether or not you ever touch the platform — but if you want to talk, I would welcome it. You can find me at kognaro.com.
 
 **Kognaro -- Your AI. Your Data. Your Terms.**
