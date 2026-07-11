@@ -131,6 +131,12 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   color: var(--e-dim);
 }
 .btn-outline-dark:hover { color: var(--e-text); border-color: var(--bronze); }
+/* secondary button on light surfaces (whitepaper header) */
+.btn-outline-light {
+  border: 1px solid var(--t-hair);
+  color: var(--clay-text);
+}
+.btn-outline-light:hover { border-color: var(--clay); background: var(--clay-subtle); }
 
 /* ============================================================
    LANDING PAGE (espresso hero, single screen)
@@ -208,6 +214,13 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   flex-wrap: wrap;
   justify-content: center;
 }
+.landing .abstract-line {
+  margin: 1.1rem 0 0;
+  font-size: 0.9rem;
+  color: var(--e-dim);
+}
+.landing .abstract-line a { color: var(--clay-on-dark); text-underline-offset: 3px; }
+.landing .abstract-line a:hover { color: var(--ochre); }
 .landing .rule {
   width: 3.5rem;
   border: 0;

@@ -1,0 +1,101 @@
+/* ============================================================
+   KOGNARO — one-page executive abstract PRINT stylesheet
+   Layered on top of print.css (tokens, fonts, @page size) by
+   whitepaper/abstract-print.html; rendered with
+   scripts/render-pdf.mjs --no-footer (the closing lines of the
+   abstract itself act as the footer band).
+   ============================================================ */
+
+/* INTENT: one-pager type base — 9.5pt/1.42 body (the agreed floor;
+   10pt/1.45 overflowed by ~2 paragraphs), single column inside
+   symmetric 2cm margins. */
+.abs {
+  font-size: 9.5pt;
+  line-height: 1.42;
+  color: var(--text-secondary);
+}
+.abs p { margin: 0 0 5pt; orphans: 3; widows: 3; }
+.abs strong { font-weight: 700; color: var(--t-ink); }
+
+/* INTENT: brand lockup row — small pinwheel + wordmark left (same
+   scale language as the site topline), document label right. */
+.abs .topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9pt;
+}
+.abs .lockup { display: flex; align-items: center; gap: 8pt; }
+.abs .kg-mark { width: 16pt; height: 16pt; color: var(--clay); }
+.abs .kg-wordmark {
+  font-weight: 500;
+  font-size: 10.5pt;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--t-ink);
+}
+.abs .doc-label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 7.5pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--clay-text);
+}
+
+/* INTENT: title block — paper title + the abstract's meta line,
+   compact so the body owns the page. */
+.abs h1 {
+  font-weight: 700;
+  font-size: 20pt;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--t-ink);
+  margin: 0 0 4pt;
+}
+.abs .meta {
+  font-size: 9.5pt;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  margin: 0 0 5pt;
+}
+.abs .title-rule {
+  border: 0;
+  border-top: 2pt solid var(--clay);
+  width: 44pt;
+  margin: 0 0 9pt;
+}
+
+/* INTENT: the operating rule is the paper's centerpiece — set as a
+   display line in clay, slightly larger, with room around it. */
+.abs .rule-line {
+  font-weight: 700;
+  font-size: 11pt;
+  color: var(--clay-text);
+  margin: 6pt 0;
+}
+.abs .rule-line strong { color: inherit; }
+
+/* INTENT: in-content footer band (replaces the engine footer):
+   hairline, then the full-paper link and the brand tagline. */
+.abs .foot {
+  margin-top: 6pt;
+  padding-top: 5pt;
+  border-top: 0.75pt solid var(--border-hairline);
+  text-align: center;
+}
+.abs .foot .full-paper {
+  font-weight: 700;
+  font-size: 9.5pt;
+  margin: 0 0 3pt;
+}
+.abs .foot .full-paper a { color: var(--clay-text); text-decoration: none; }
+.abs .foot .tagline {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 7.5pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin: 0;
+}

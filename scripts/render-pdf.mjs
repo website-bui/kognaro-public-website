@@ -6,18 +6,21 @@
 // also provides page numbers. No npm dependencies (Node >= 22: global fetch
 // + WebSocket).
 //
-// Usage: node scripts/render-pdf.mjs <input.html> <output.pdf>
+// Usage: node scripts/render-pdf.mjs <input.html> <output.pdf> [--no-footer]
+//   --no-footer: omit the native footer band (used by the one-page abstract,
+//   whose closing lines are the footer).
 import { spawn } from "node:child_process";
 import { writeFileSync, existsSync, mkdtempSync, rmSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
-const [inputHtml, outputPdf] = process.argv.slice(2);
+const [inputHtml, outputPdf, footerFlag] = process.argv.slice(2);
 if (!inputHtml || !outputPdf) {
-  console.error("usage: node scripts/render-pdf.mjs <input.html> <output.pdf>");
+  console.error("usage: node scripts/render-pdf.mjs <input.html> <output.pdf> [--no-footer]");
   process.exit(1);
 }
+const showFooter = footerFlag !== "--no-footer";
 
 const EDGE_PATHS = [
   "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
@@ -98,7 +101,8 @@ try {
   }
 
   // INTENT: margins live HERE, not in @page CSS (the native footer draws
-  // inside the engine-owned margin band): 2cm sides/top, 2.8cm bottom.
+  // inside the engine-owned margin band): 2cm sides/top; the bottom is
+  // 2.8cm only when the footer band needs the room, symmetric 2cm otherwise.
   const CM = 1 / 2.54; // inches
   const { data } = await send("Page.printToPDF", {
     printBackground: true,
@@ -108,10 +112,10 @@ try {
     marginTop: 2 * CM,
     marginLeft: 2 * CM,
     marginRight: 2 * CM,
-    marginBottom: 2.8 * CM,
-    displayHeaderFooter: true,
+    marginBottom: (showFooter ? 2.8 : 2) * CM,
+    displayHeaderFooter: showFooter,
     headerTemplate: "<span></span>",
-    footerTemplate: FOOTER,
+    footerTemplate: showFooter ? FOOTER : "<span></span>",
   }, sessionId);
 
   writeFileSync(resolve(outputPdf), Buffer.from(data, "base64"));

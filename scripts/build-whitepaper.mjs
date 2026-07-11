@@ -188,6 +188,7 @@ const html = `<!DOCTYPE html>
         <p class="subsubtitle">An Architectural Framework for Governed Enterprise AI</p>
         <p class="meta"><span>July 2026</span><span>~${minutes} min read</span><span>${words.toLocaleString("en-US")} words</span></p>
         <a class="btn btn-clay" href="/whitepaper/kognaro-trust-is-structural.pdf" download>Download PDF</a>
+        <a class="btn btn-outline-light" href="/whitepaper/kognaro-abstract.pdf" download>One-Page Abstract (PDF)</a>
         <hr>
       </header>
 
