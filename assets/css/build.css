@@ -1,0 +1,451 @@
+/* ============================================================
+   KOGNARO /build page stylesheet
+   Layered on top of site.css: all colors and type come from the
+   Travertine tokens defined there. No new palette values.
+   ============================================================ */
+
+/* ---------- Page base ---------- */
+.buildpage {
+  background: var(--t-canvas);
+  color: var(--t-ink);
+  font-weight: 400;
+  line-height: 1.6;
+}
+.bp-band-inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+.buildpage h2 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 0 0 1.2rem;
+  color: var(--t-ink);
+}
+.bp-eyebrow {
+  color: var(--clay-text);
+  margin: 0 0 0.7rem;
+}
+/* form controls and buttons share the site focus ring */
+.buildpage input:focus-visible,
+.buildpage select:focus-visible,
+.buildpage textarea:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+/* .btn is styled for anchors in site.css; extend it to real buttons */
+button.btn {
+  border: 0;
+  cursor: pointer;
+  font-size: 1rem;
+}
+button.btn:disabled { opacity: 0.6; cursor: default; }
+
+/* ---------- Hero (espresso, ambient Team Live texture) ---------- */
+.bp-hero {
+  position: relative;
+  background: var(--e-base);
+  color: var(--e-text);
+  overflow: hidden;
+  isolation: isolate;
+}
+/* INTENT: the only dimmed/softened image on the page; pure background
+   texture behind the hero text, never presented as a product shot. */
+.bp-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: url("/assets/build/team_live.webp") center 20% / cover no-repeat;
+  opacity: 0.13;
+  filter: saturate(0.65) blur(2px);
+}
+/* INTENT: espresso wash over the texture so the headline stays legible. */
+.bp-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(26, 20, 16, 0.55) 0%, rgba(26, 20, 16, 0.15) 45%, rgba(26, 20, 16, 0.75) 100%);
+}
+.bp-hero-inner {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding: clamp(4rem, 10vw, 7rem) 1.5rem clamp(3.5rem, 9vw, 6rem);
+  text-align: center;
+}
+.bp-hero h1 {
+  font-size: clamp(1.75rem, 4.6vw, 2.9rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.14;
+  margin: 0;
+  color: var(--e-text);
+}
+.bp-subhead {
+  max-width: 46rem;
+  margin: 1.5rem auto 0;
+  font-size: clamp(1rem, 2.4vw, 1.15rem);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--e-text);
+}
+.bp-sovereignty {
+  max-width: 46rem;
+  margin: 1.4rem auto 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--e-dim);
+}
+.bp-cta {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ---------- Founder strip ---------- */
+.bp-founder { border-bottom: 1px solid var(--border-hairline); }
+.bp-founder .bp-band-inner { padding-top: 3rem; padding-bottom: 3rem; }
+.bp-founder-grid {
+  display: grid;
+  grid-template-columns: 168px minmax(0, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+.bp-founder-photo {
+  width: 168px;
+  height: 168px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.bp-founder-photo-placeholder {
+  background: var(--t-sunken);
+  border: 1px dashed var(--t-hair);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+.bp-founder-text { margin: 0; font-size: 1.05rem; color: var(--text-secondary); }
+@media (max-width: 640px) {
+  .bp-founder-grid { grid-template-columns: 1fr; }
+  .bp-founder-photo { width: 128px; height: 128px; }
+}
+
+/* ---------- Director/Designer band (the single gradient) ---------- */
+/* INTENT: the one allowed same-hue stone gradient band on the page. */
+.bp-director {
+  background: linear-gradient(168deg, var(--t-sunken) 0%, var(--t-canvas) 42%, #EFE6D6 78%, var(--t-sunken) 100%);
+  border-bottom: 1px solid var(--border-hairline);
+}
+.bp-director .bp-band-inner {
+  max-width: 54rem;
+  padding-top: clamp(4rem, 9vw, 6rem);
+  padding-bottom: clamp(4rem, 9vw, 6rem);
+}
+.bp-director h2 {
+  font-size: clamp(1.8rem, 4.6vw, 2.6rem);
+  font-weight: 700;
+  color: var(--t-ink);
+}
+.bp-director h2::after {
+  content: "";
+  display: block;
+  width: 3.5rem;
+  border-top: 3px solid var(--clay);
+  margin-top: 1.1rem;
+}
+.bp-director-body {
+  margin: 1.4rem 0 0;
+  font-size: clamp(1.05rem, 2.4vw, 1.2rem);
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+/* INTENT: the verbatim leverage sentence, weighted above body text so the
+   band reads as a peer of "What I have built". */
+.bp-director-kicker {
+  margin: 1.6rem 0 0;
+  font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--t-ink);
+}
+
+/* INTENT: four-stage process flow; row with arrows on desktop, stacked
+   column with down-turned arrows on mobile. Travertine only. */
+.bp-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0.9rem;
+  margin-top: 2.4rem;
+}
+.bp-flow-stage {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  background: var(--t-raised);
+  border: 1px solid var(--t-hair);
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem;
+}
+.bp-flow-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--clay);
+}
+.bp-flow-title { font-weight: 500; font-size: 1.02rem; color: var(--t-ink); }
+.bp-flow-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+.bp-flow-arrow {
+  align-self: center;
+  flex: 0 0 auto;
+  width: 11px;
+  height: 11px;
+  border-top: 2px solid var(--clay);
+  border-right: 2px solid var(--clay);
+  transform: rotate(45deg);
+}
+@media (max-width: 760px) {
+  .bp-flow { flex-direction: column; gap: 0.7rem; }
+  .bp-flow-arrow { transform: rotate(135deg); }
+}
+
+/* ---------- What I have built (screenshot bands) ---------- */
+.bp-built .bp-band-inner { padding-bottom: 5rem; }
+.bp-shot {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
+  gap: 2.5rem;
+  align-items: center;
+  padding: 2.6rem 0;
+}
+.bp-shot + .bp-shot { border-top: 1px solid var(--border-hairline); }
+.bp-shot-figure {
+  margin: 0;
+  order: 0;
+  border: 1px solid var(--t-hair);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--t-raised);
+  box-shadow: 0 18px 40px -28px rgba(46, 37, 26, 0.45);
+}
+.bp-shot-figure img { display: block; width: 100%; height: auto; }
+.bp-shot-caption { order: 1; }
+.bp-shot-flip .bp-shot-figure { order: 1; }
+.bp-shot-flip .bp-shot-caption { order: 0; }
+/* INTENT: flipped bands swap the column widths too, so the screenshot
+   always gets the wide (5fr) column whichever side it sits on. */
+.bp-shot-flip { grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); }
+.bp-shot-caption h3 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin: 0 0 0.6rem;
+  color: var(--t-ink);
+}
+.bp-shot-caption p { margin: 0; color: var(--text-secondary); }
+.bp-built-lede { max-width: 46rem; margin: 0 0 1rem; color: var(--text-secondary); }
+
+/* INTENT: capability grid; three across on desktop, stacked on mobile. */
+.bp-cap-block {
+  margin-top: 2.6rem;
+  padding-top: 2.2rem;
+  border-top: 1px solid var(--border-hairline);
+}
+.bp-cap-label { display: block; color: var(--clay-text); margin: 0 0 1.2rem; }
+.bp-cap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+.bp-cap-cell {
+  background: var(--t-raised);
+  border: 1px solid var(--border-hairline);
+  border-radius: 10px;
+  padding: 1.2rem 1.3rem;
+}
+.bp-cap-cell h3 { margin: 0 0 0.45rem; font-size: 1.02rem; font-weight: 500; color: var(--t-ink); }
+.bp-cap-cell p { margin: 0; font-size: 0.93rem; color: var(--text-secondary); }
+@media (max-width: 760px) {
+  .bp-cap-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .bp-shot { grid-template-columns: 1fr; gap: 1.2rem; }
+  /* stacked: caption above its screenshot */
+  .bp-shot-flip .bp-shot-figure { order: 1; }
+  .bp-shot-flip .bp-shot-caption { order: 0; }
+}
+
+/* ---------- Building next (roadmap, visually distinct) ---------- */
+.bp-next {
+  background: var(--t-sunken);
+  border-top: 2px dashed var(--t-hair);
+  border-bottom: 2px dashed var(--t-hair);
+}
+.bp-next-item {
+  background: var(--t-raised);
+  border: 1px solid var(--border-hairline);
+  border-radius: 10px;
+  padding: 1.8rem;
+  margin-top: 1.6rem;
+}
+.bp-next-head {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+.bp-next-head h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--t-ink);
+}
+/* INTENT: explicit status pill so roadmap items cannot read as shipped. */
+.bp-pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ochre-deep);
+  border: 1px solid var(--ochre-deep);
+  border-radius: 999px;
+  padding: 0.3em 0.9em;
+  white-space: nowrap;
+}
+.bp-next-line { margin: 0 0 1.4rem; color: var(--text-secondary); }
+.bp-wf-panel { border-left: 3px solid var(--ochre); }
+.bp-wf-body { margin: 0; color: var(--text-secondary); }
+
+/* the one allowed horizontal swipe on the page */
+.bp-app-strip {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-bottom: 0.6rem;
+  scrollbar-width: thin;
+}
+/* INTENT: uniform phone-frame tile; normalizes the four renders' differing
+   heights and framings without distorting the screen content. */
+.bp-app-frame {
+  scroll-snap-align: center;
+  flex: 0 0 228px;
+  height: 464px;
+  background: var(--e-base);
+  border: 1px solid var(--e-border);
+  border-radius: 30px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bp-app-frame img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 18px;
+}
+@media (max-width: 640px) {
+  .bp-app-frame { flex-basis: 200px; height: 408px; }
+}
+
+/* ---------- Partner offer + form ---------- */
+.bp-partner .bp-band-inner { padding-bottom: 5rem; }
+.bp-partner-body { max-width: 46rem; margin: 0 0 2rem; color: var(--text-secondary); }
+.bp-cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.4rem;
+}
+.bp-col {
+  background: var(--t-raised);
+  border: 1px solid var(--border-hairline);
+  border-radius: 10px;
+  padding: 1.4rem;
+}
+.bp-col .kg-label { display: block; color: var(--clay-text); margin: 0 0 0.7rem; }
+.bp-col p { margin: 0; color: var(--text-secondary); font-size: 0.97rem; }
+@media (max-width: 760px) {
+  .bp-cols { grid-template-columns: 1fr; }
+}
+
+.bp-form-card {
+  margin-top: 2.2rem;
+  background: var(--t-raised);
+  border: 1px solid var(--t-hair);
+  border-radius: 10px;
+  padding: clamp(1.4rem, 4vw, 2.2rem);
+}
+.bp-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+.bp-field label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: var(--t-ink);
+}
+.bp-field input,
+.bp-field select,
+.bp-field textarea {
+  width: 100%;
+  padding: 0.65em 0.8em;
+  border: 1px solid var(--t-hair);
+  border-radius: 6px;
+  background: var(--t-canvas);
+  color: var(--t-ink);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+}
+.bp-field textarea { resize: vertical; }
+.bp-field-wide { grid-column: 1 / -1; }
+.bp-field.bp-field-invalid input,
+.bp-field.bp-field-invalid select { border-color: var(--clay); }
+@media (max-width: 640px) {
+  .bp-form-grid { grid-template-columns: 1fr; }
+}
+/* honeypot: visually removed, still in the DOM for bots */
+.bp-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.bp-form-error {
+  margin: 1.2rem 0 0;
+  padding: 0.7em 1em;
+  border: 1px solid var(--clay);
+  border-radius: 6px;
+  background: var(--clay-subtle);
+  color: var(--clay-text);
+  font-size: 0.95rem;
+}
+.bp-submit { margin-top: 1.4rem; }
+.bp-form-success h3 { margin: 0 0 0.5rem; font-size: 1.3rem; font-weight: 500; }
+.bp-form-success p { margin: 0; color: var(--text-secondary); }
+
+/* ---------- Footer ---------- */
+.bp-footer {
+  padding: 1.4rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-hairline);
+}

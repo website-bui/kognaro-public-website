@@ -77,6 +77,9 @@
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --ls-label: 0.14em;
   --ls-mark:  0.28em;
+
+  /* pinned header height (all pages) */
+  --header-h: 52px;
 }
 
 /* ---------- Reset-ish ---------- */
@@ -112,6 +115,67 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--ls-label);
+}
+
+/* ---------- Pinned site header (all pages) ---------- */
+/* INTENT: one sticky header shared by the splash, whitepaper, and build
+   pages. Espresso surface so it stays legible over dark heroes and light
+   content alike; position:sticky keeps it in normal flow, so page content
+   is never hidden behind it and no scroll offset is needed. */
+.kg-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--header-h);
+  padding: 0 1.5rem;
+  background: rgba(26, 20, 16, 0.92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--clay);
+}
+.kg-header .lockup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.kg-header .kg-mark {
+  width: 22px;
+  height: 22px;
+  color: var(--clay-on-dark);
+  flex: 0 0 auto;
+}
+.kg-header .kg-wordmark { font-size: 1rem; color: var(--e-text); }
+/* INTENT: the brand line sits dead-center on wide screens and yields to
+   the nav on narrow ones. */
+.kg-header-tag {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--bronze);
+}
+.kg-nav { display: flex; gap: 1.4rem; }
+.kg-nav a {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+  color: var(--e-dim);
+  text-decoration: none;
+}
+.kg-nav a:hover { color: var(--e-text); }
+.kg-nav a[aria-current="page"] { color: var(--ochre); }
+@media (max-width: 1060px) { .kg-header-tag { display: none; } }
+@media (max-width: 560px) {
+  .kg-header { padding: 0 1rem; }
+  .kg-header .kg-wordmark { display: none; }
+  .kg-nav { gap: 0.9rem; }
+  .kg-nav a { font-size: 0.68rem; letter-spacing: 0.09em; }
 }
 
 .btn {
@@ -157,32 +221,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   text-align: center;
   padding: 2.5rem 1.5rem 2rem;
 }
-/* top-left brand lockup, mirroring the console splash header */
-.landing .topline {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.1rem 1.5rem 0;
-}
-.landing .topline .lockup {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.landing .topline .kg-mark {
-  width: 22px;
-  height: 22px;
-  color: var(--clay-on-dark);
-  flex: 0 0 auto;
-}
-.landing .topline .kg-wordmark {
-  font-size: 1rem;
-  color: var(--e-text);
-}
-.landing .topline-label { color: var(--bronze); }
-@media (max-width: 560px) { .landing .topline-label { display: none; } }
-
 .landing main .kg-wordmark {
   font-size: clamp(2rem, 6vw, 3.25rem);
   color: var(--ochre);
@@ -250,40 +288,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   background: var(--t-canvas);
   color: var(--t-ink);
 }
-.paper .topbar {
-  background: var(--e-base);
-  border-bottom: 2px solid var(--clay);
-  padding: 0.85rem 1.5rem;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.paper .topbar .lockup {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-.paper .topbar .kg-mark {
-  width: 20px;
-  height: 20px;
-  color: var(--clay-on-dark);
-  flex: 0 0 auto;
-}
-.paper .topbar .kg-wordmark {
-  color: var(--ochre);
-  font-size: 1rem;
-  text-decoration: none;
-}
-.paper .topbar .back {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--e-dim);
-  text-decoration: none;
-}
-.paper .topbar .back:hover { color: var(--e-text); }
-
 .paper-layout {
   display: grid;
   grid-template-columns: 17rem minmax(0, 1fr);
@@ -296,9 +300,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 /* ----- Sticky sidebar TOC (desktop) ----- */
 .toc {
   position: sticky;
-  top: 0;
+  top: var(--header-h);
   align-self: start;
-  max-height: 100vh;
+  max-height: calc(100vh - var(--header-h));
   overflow-y: auto;
   padding: 2.5rem 0 2.5rem;
   font-size: 0.85rem;
@@ -417,7 +421,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 /* the header block already ends in a rule — don't double it on the first section */
 .paper-head + h1 { border-top: 0; padding-top: 0; margin-top: 2.4rem; }
 /* anchor offset so jumped-to headings aren't flush to the viewport top */
-.article h1[id], .article h2[id], .article h3[id] { scroll-margin-top: 1.5rem; }
+.article h1[id], .article h2[id], .article h3[id] { scroll-margin-top: calc(var(--header-h) + 1rem); }
 
 .article .headlink { color: inherit; text-decoration: none; }
 .article .headlink:hover { color: var(--clay-text); }
@@ -470,6 +474,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 }
 
 @media print {
-  .toc, .paper .topbar, .paper-head .btn { display: none; }
+  .toc, .kg-header, .paper-head .btn { display: none; }
   .paper-layout { display: block; }
 }

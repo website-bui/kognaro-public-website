@@ -2,3 +2,11 @@
 whitepaper/print.html
 whitepaper/toc-pages.json
 whitepaper/abstract-print.html
+
+# authoring-time tooling (image pipeline)
+node_modules/
+
+# original /build screenshots, pre-crop: they can show the hosted URL bar,
+# so they are never committed or deployed. Only the cropped outputs in
+# assets/build/ are committed.
+assets/build/src/

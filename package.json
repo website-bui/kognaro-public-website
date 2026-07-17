@@ -1,0 +1,11 @@
+{
+  "name": "kognaro-public-website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build-screens": "node scripts/build-screens.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.3"
+  }
+}
