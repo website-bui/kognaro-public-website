@@ -1,10 +1,18 @@
-// INTENT: render the two manifest-driven sections of /build (built screens,
-// app strip) and wire the interest form to the Pages Function at
-// /api/interest. All copy that can change lives in the manifest or in the
-// constants below, not in generated markup.
+// INTENT: render the manifest-driven sections of /build (built screens,
+// app strip, capability grid) and wire the interest form to a direct
+// client-side Supabase insert. All copy that can change lives in the
+// manifest or in the constants below, not in generated markup.
 import { builtScreens, appScreens, capabilities } from "/assets/js/build-screens.js";
 
 const IMG_BASE = "/assets/build/";
+
+// INTENT: the dedicated design-partner Supabase project (NOT the main
+// application database). Paste both values between the quotes; find them
+// in Supabase under Project Settings > API. The anon key is a publishable
+// key and safe to ship in this file: the table's RLS policy allows INSERT
+// only, so this key can write submissions but can never read them back.
+const SUPABASE_URL = "https://qmcpshysawnvchayivyu.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_miLsaMUeEuBD1SgdalQCPg_A-doUTST";
 
 // INTENT: the only user-facing strings authored in JS, kept here so a copy
 // edit is a one-line change.
@@ -107,12 +115,34 @@ function wireForm() {
       return;
     }
 
+    // INTENT: honeypot filled means a bot; show success, store nothing.
+    if (fields.website.length > 0) {
+      form.hidden = true;
+      success.hidden = false;
+      return;
+    }
+
     submit.disabled = true;
     try {
-      const response = await fetch("/api/interest", {
+      // INTENT: insert via Supabase's REST API as the anon role. Only real
+      // table columns go in the payload, never the honeypot field; empty
+      // optional fields are stored as null.
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/design_partner_interest`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(fields),
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify({
+          name: fields.name,
+          company: fields.company || null,
+          email: fields.email,
+          automate_first: fields.automate_first || null,
+          technical_comfort: fields.technical_comfort,
+          why_interested: fields.why_interested || null,
+        }),
       });
       if (!response.ok) throw new Error(`status ${response.status}`);
       // INTENT: success replaces the form in place; nothing to preserve.

@@ -5,7 +5,7 @@ The public site for [Kognaro](https://kognaro.com): a single-screen landing page
 ## Layout
 
 - `index.html` — landing page
-- `build/index.html` - the `/build` design-partner page: manifest-driven screenshots via `assets/js/build-screens.js`; the interest form posts to the Pages Function `functions/api/interest.js`, which needs `SUPABASE_URL` and `SUPABASE_ANON_KEY` set in the Pages dashboard; screenshot sources go in `assets/build/src/` (gitignored) and `npm run build-screens` crops and optimizes them into `assets/build/`
+- `build/index.html` - the `/build` design-partner page: manifest-driven screenshots via `assets/js/build-screens.js`; the interest form inserts directly into a dedicated Supabase project from the browser (project URL and publishable anon key are constants at the top of `assets/js/build-page.js`; the table's RLS policy is insert-only, so that key can never read data back); screenshot sources go in `assets/build/src/` (gitignored) and `npm run build-screens` crops and optimizes them into `assets/build/`
 - `whitepaper/index.html` — the whitepaper (generated from `v5-normalized.md` by `scripts/build-whitepaper.mjs`)
 - `v5.md` — whitepaper source-of-record (pandoc export, committed unmodified)
 - `v5-normalized.md` — normalized copy (`scripts/normalize.mjs`: LF endings, unescaped quotes, real em-dashes, UTF-8 no BOM)
